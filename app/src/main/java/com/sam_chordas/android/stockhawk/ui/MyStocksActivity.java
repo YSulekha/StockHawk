@@ -17,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -138,9 +139,12 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                                 public void onInput(MaterialDialog dialog, CharSequence input) {
                                     // On FAB click, receive user input. Make sure the stock doesn't already exist
                                     // in the DB and proceed accordingly
+                                    Log.v("FAB",input.toString());
+                                    String inputValue = input.toString().replaceAll(" ","");
+                                    Log.v("FAB",inputValue);
                                     Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                                             new String[]{QuoteColumns.SYMBOL}, QuoteColumns.SYMBOL + "= ?",
-                                            new String[]{input.toString().toUpperCase()}, null);
+                                            new String[]{inputValue.toString().toUpperCase()}, null);
                                     if (c.getCount() != 0) {
                                         Toast toast =
                                                 Toast.makeText(MyStocksActivity.this, getString(R.string.duplicate_toast),
@@ -149,9 +153,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                                         toast.show();
                                         return;
                                     } else {
-                                        // Add the stock to DB
+                                        // Add stock to DB
                                         mServiceIntent.putExtra("tag", "add");
-                                        mServiceIntent.putExtra("symbol", input.toString());
+                                        mServiceIntent.putExtra("symbol", inputValue.toString());
                                         startService(mServiceIntent);
                                     }
                                 }
@@ -279,15 +283,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursorAdapter.swapCursor(data);
         mCursor = data;
-
-//this does not work because tag variable will be replaced with value "periodic immediately.
-        if (tag.equals("init") && mCursor != null && mCursor.getCount() != 0) {
-            if (mCursor.moveToPosition(0)) {
-                String symbol = mCursor.getString(mCursor.getColumnIndex(QuoteColumns.SYMBOL));
-                String comName = mCursor.getString(mCursor.getColumnIndex(QuoteColumns.NAME));
-                onTouchListener(symbol, comName);
-            }
-        }
     }
 
     @Override
@@ -325,7 +320,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                         break;
                 }
                 tv.setText(emptyString);
-
             }
         }
     }

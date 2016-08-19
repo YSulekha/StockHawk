@@ -29,7 +29,7 @@ public class Utils {
   public static boolean showPercent = true;
 
   public static ArrayList quoteJsonToContentVals(String JSON, Context mContext){
- //     Log.v("Utils",JSON);
+      Log.v("Utils",JSON);
     ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>();
     JSONObject jsonObject = null;
     JSONArray resultsArray = null;
@@ -38,6 +38,7 @@ public class Utils {
       if (jsonObject != null && jsonObject.length() != 0){
         jsonObject = jsonObject.getJSONObject("query");
         int count = Integer.parseInt(jsonObject.getString("count"));
+          Log.v("Utils+Count",String.valueOf(count));
         if (count == 1){
           jsonObject = jsonObject.getJSONObject("results")
               .getJSONObject("quote");
@@ -50,6 +51,7 @@ public class Utils {
 
           if (resultsArray != null && resultsArray.length() != 0){
             for (int i = 0; i < resultsArray.length(); i++){
+                Log.v("UtilsInsidefor","dsf");
               jsonObject = resultsArray.getJSONObject(i);
               batchOperations.add(buildBatchOperation(jsonObject));
             }
@@ -95,6 +97,7 @@ public class Utils {
     try {
       String change = jsonObject.getString("Change");
       String symbol =   jsonObject.getString("symbol");
+        Log.v("symbol",symbol);
       String bid = jsonObject.getString("Bid") ;
 
       if((change==null || (change.equals("null")) && ( bid == null) || (bid.equals("null")))){
