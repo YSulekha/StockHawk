@@ -3,7 +3,6 @@ package com.sam_chordas.android.stockhawk.ui;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -58,7 +57,6 @@ public class DetailFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         Bundle bundle = getArguments();
         if (bundle != null) {
             symbolValue = bundle.getString(SYMBOL);
@@ -72,14 +70,13 @@ public class DetailFragment extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         mContext = getActivity();
-        Intent intent = getActivity().getIntent();
         getActivity().setTitle(nameValue);
         mHandler = new Handler(Looper.getMainLooper());
         lineChart = (LineChart) rootView.findViewById(R.id.linechart);
         entries = new ArrayList<Entry>();
         labels = new ArrayList<String>();
         lineChart.setDescriptionColor(getResources().getColor(R.color.material_blue_500));
-        lineChart.setNoDataText("Fetching Data..");
+        lineChart.setNoDataText(getString(R.string.empty_fetch_data));
         if (savedInstanceState == null) {
             buildUrl(symbolValue);
         } else {
@@ -99,18 +96,18 @@ public class DetailFragment extends android.support.v4.app.Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        //Store the graph values to prevent the API call when Orientation changes
         if (result != null) {
             outState.putStringArrayList("Entry", result.get(1));
             outState.putStringArrayList("Label", result.get(0));
         }
     }
-
+//Method to fetch the graph values
     void fetchData(String url) throws IOException {
 
         Request request = new Request.Builder()
                 .url(url)
                 .build();
-        Log.v("Before API Call", "Graph");
         client.newCall(request).enqueue(new Callback() {
 
             @Override
@@ -129,8 +126,9 @@ public class DetailFragment extends android.support.v4.app.Fragment {
         });
 
     }
-
-    public void updateChart() {
+// Method to update the chart with the values obtained from API call.
+    private void updateChart() {
+        //Create a UI thread to update the chart
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -149,7 +147,7 @@ public class DetailFragment extends android.support.v4.app.Fragment {
         });
     }
 
-    public void setGraphParameters(ArrayList<ArrayList<String>> result) {
+    private void setGraphParameters(ArrayList<ArrayList<String>> result) {
         ArrayList<String> highValue = result.get(0);
         labels = result.get(1);
         for (int i = 0; i < highValue.size(); i++) {
@@ -157,10 +155,9 @@ public class DetailFragment extends android.support.v4.app.Fragment {
             Entry entry = new Entry(Float.parseFloat(high), i);
             entries.add(entry);
         }
-
     }
 
-    public void buildUrl(String symbol) {
+    private void buildUrl(String symbol) {
         StringBuilder urlStringBuilder = new StringBuilder();
         Calendar c = Calendar.getInstance();
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
@@ -181,7 +178,6 @@ public class DetailFragment extends android.support.v4.app.Fragment {
                 + "org%2Falltableswithkeys");
         String urlString = urlStringBuilder.toString();
 
-        String response = "";
         try {
             fetchData(urlString);
         } catch (IOException e) {
