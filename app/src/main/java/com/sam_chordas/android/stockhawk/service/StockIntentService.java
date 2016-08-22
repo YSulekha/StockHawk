@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.TaskParams;
+import com.sam_chordas.android.stockhawk.R;
 
 /**
  * Created by sam_chordas on 10/1/15.
@@ -35,8 +36,8 @@ public class StockIntentService extends IntentService {
     mHandler.post(new Runnable() {
       @Override
       public void run() {
-        Toast toast = Toast.makeText(getBaseContext(),"Stock Symbol not available",Toast.LENGTH_LONG);
-        // toast.setText("Stock symbol not available");
+
+        Toast toast = Toast.makeText(getBaseContext(),getString(R.string.symbol_not_available),Toast.LENGTH_LONG);
         toast.show();
       }
     });

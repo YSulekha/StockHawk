@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.sam_chordas.android.stockhawk.R;
@@ -17,9 +16,7 @@ import com.sam_chordas.android.stockhawk.service.StockTaskService;
 import com.sam_chordas.android.stockhawk.ui.DetailActivity;
 import com.sam_chordas.android.stockhawk.ui.MyStocksActivity;
 
-/**
- * Created by aharyadi on 7/28/16.
- */
+
 public class StockHawkDetailWidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -34,7 +31,6 @@ public class StockHawkDetailWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
        for(int widgetId:appWidgetIds){
-           Log.v("InsideWidget","ada");
            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.collection_widget);
            Intent intent = new Intent(context, MyStocksActivity.class);
            PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
@@ -46,13 +42,20 @@ public class StockHawkDetailWidgetProvider extends AppWidgetProvider {
            else{
                setRemoteAdadpterv11(context,views);
            }
-
-           Intent detailIntent = new Intent(context, DetailActivity.class);
-           PendingIntent detailPendingIntent =
+           boolean useDetailActivity = context.getResources()
+                   .getBoolean(R.bool.use_detail_activity);
+           Intent clickIntentTemplate = useDetailActivity
+                   ? new Intent(context, DetailActivity.class)
+                   : new Intent(context, MyStocksActivity.class);
+           PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
+                   .addNextIntentWithParentStack(clickIntentTemplate)
+                   .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+       //    Intent detailIntent = new Intent(context, DetailActivity.class);
+        /*   PendingIntent detailPendingIntent =
                    TaskStackBuilder.create(context).addNextIntentWithParentStack(detailIntent).
-                           getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                           getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);*/
 
-           views.setPendingIntentTemplate(R.id.widget_list_view,detailPendingIntent);
+           views.setPendingIntentTemplate(R.id.widget_list_view,clickPendingIntentTemplate);
            views.setEmptyView(R.id.widget_list_view, R.id.widget_text_view);
            appWidgetManager.updateAppWidget(widgetId,views);
 

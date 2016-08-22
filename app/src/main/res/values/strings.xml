@@ -18,6 +18,7 @@
 
     <!-- Content description of Line graph -->
     <string name ="graph_description">Line Chart X axis Date Y axis Close Value</string>
+    <string name="symbol_not_available">Stock Symbol not available</string>
 
     <!-- Following strings are for the error handling of API Call -->
     <string name="network_toast">Uh-oh! This app requires an internet connection</string>

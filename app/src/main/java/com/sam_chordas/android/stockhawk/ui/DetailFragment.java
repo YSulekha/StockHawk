@@ -102,7 +102,7 @@ public class DetailFragment extends android.support.v4.app.Fragment {
             outState.putStringArrayList("Label", result.get(0));
         }
     }
-//Method to fetch the graph values
+   //Method to fetch the graph values
     void fetchData(String url) throws IOException {
 
         Request request = new Request.Builder()
@@ -132,13 +132,13 @@ public class DetailFragment extends android.support.v4.app.Fragment {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                LineDataSet dataset = new LineDataSet(entries, "Close value");
+                LineDataSet dataset = new LineDataSet(entries, symbolValue);
                 LineData data = new LineData(labels, dataset);
                 lineChart.setData(data);
                 dataset.setHighLightColor(Color.rgb(244, 117, 117));
                 dataset.setDrawCircles(true);
                 dataset.setDrawFilled(true);
-                lineChart.setDescription(symbolValue);
+                lineChart.setDescription("Close Value");
                 lineChart.setAutoScaleMinMaxEnabled(true);
                 lineChart.animateXY(2000, 3000);
                 lineChart.setKeepPositionOnRotation(true);
@@ -183,7 +183,6 @@ public class DetailFragment extends android.support.v4.app.Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
 

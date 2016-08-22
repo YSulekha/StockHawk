@@ -50,7 +50,6 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
 
   @Override
   public void onBindViewHolder(final ViewHolder viewHolder, final Cursor cursor){
-    Log.v("Inside BindView","jjj");
     viewHolder.symbol.setText(cursor.getString(cursor.getColumnIndex("symbol")));
     viewHolder.bidPrice.setText(cursor.getString(cursor.getColumnIndex("bid_price")));
     viewHolder.compName.setText(cursor.getString(cursor.getColumnIndex("name")));
@@ -114,20 +113,16 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
 
     @Override
     public void onItemSelected(){
-      Log.v("InsideOnItem","Selected");
       itemView.setBackgroundColor(Color.LTGRAY);
     }
 
     @Override
     public void onItemClear(){
-      Log.v("Inside onItemClear", "dad");
-
       itemView.setBackgroundColor(mContext.getResources().getColor(R.color.material_blue_500));
     }
 
     @Override
     public void onClick(View v) {
-      Log.v("Inside OnClick", "ViewHolder");
 
     }
   }

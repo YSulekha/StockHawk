@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -70,7 +69,6 @@ public abstract class CursorRecyclerViewAdapter <VH extends RecyclerView.ViewHol
   }
 
   public Cursor swapCursor(Cursor newCursor){
-    Log.v("SwapCursor","hhh");
     if (newCursor == mCursor){
       return null;
     }
@@ -91,7 +89,6 @@ public abstract class CursorRecyclerViewAdapter <VH extends RecyclerView.ViewHol
       dataIsValid = false;
       notifyDataSetChanged();
     }
-    Log.v("InsideSwapCursor","dsfsd");
     emptyView.setVisibility(getItemCount()==0? View.VISIBLE:View.INVISIBLE);
     return oldCursor;
   }
@@ -100,7 +97,6 @@ public abstract class CursorRecyclerViewAdapter <VH extends RecyclerView.ViewHol
     @Override public void onChanged() {
       super.onChanged();
       dataIsValid = true;
-      Log.v("Inside DatasetObserver","cdscdsc");
       notifyDataSetChanged();
     }
 

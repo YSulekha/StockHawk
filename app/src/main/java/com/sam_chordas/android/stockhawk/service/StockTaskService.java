@@ -69,9 +69,7 @@ public class StockTaskService extends GcmTaskService{
     Request request = new Request.Builder()
         .url(url)
         .build();
-    Log.v("BeforeAPICall","Before");
     Response response = client.newCall(request).execute();
-    Log.v("AfterAPICall","After");
     return response.body().string();
   }
 
@@ -86,8 +84,6 @@ public class StockTaskService extends GcmTaskService{
       // Base URL for the Yahoo query
       urlStringBuilder.append("https://query.yahooapis.com/v1/public/yql?q=");
       urlStringBuilder.append(URLEncoder.encode("select * from yahoo.finance.quotes where symbol " + "in (", "UTF-8"));
-     // urlStringBuilder.append("https://query.yahooapk.com/v1/public/yql?q=");
-      //urlStringBuilder.append(URLEncoder.encode("select * from yahoo.finance.quotes where symbol " + "in (", "UTF-8"));
     } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
     }
@@ -121,7 +117,6 @@ public class StockTaskService extends GcmTaskService{
         }
       }
     } else if (params.getTag().equals("add")){
-      Log.v("TaskService","add");
       isUpdate = false;
       // get symbol from params.getExtra and build query
       String stockInput = params.getExtras().getString("symbol");
@@ -153,10 +148,8 @@ public class StockTaskService extends GcmTaskService{
                 null, null);
           }
           ArrayList<ContentProviderOperation> operations = Utils.quoteJsonToContentVals(getResponse,mContext);
-          Log.v("opearation",String.valueOf(operations.size()));
           if(operations.size()>=1 && (operations.get(0)==null || operations.get(0).equals("null"))){
             setLocationStatus(mContext,UNKNOWN_SYMBOL);
-            Log.v("TaskService","NullValue");
             return -1;
           }
           mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,

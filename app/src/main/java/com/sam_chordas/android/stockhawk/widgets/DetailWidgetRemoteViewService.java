@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Binder;
 import android.os.Build;
-import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -15,14 +14,12 @@ import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.rest.Utils;
 import com.sam_chordas.android.stockhawk.ui.DetailFragment;
 
-/**
- * Created by aharyadi on 7/28/16.
- */
 public class DetailWidgetRemoteViewService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new RemoteViewsFactory() {
             Cursor data = null;
+
             @Override
             public void onCreate() {
 
@@ -30,52 +27,48 @@ public class DetailWidgetRemoteViewService extends RemoteViewsService {
 
             @Override
             public void onDataSetChanged() {
-                if(data !=null){
+                if (data != null) {
                     data.close();
-                    data=null;
+                    data = null;
                 }
                 final long identityToken = Binder.clearCallingIdentity();
-                data = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,null,QuoteColumns.ISCURRENT + " = ?",
-                        new String[]{"1"},null);
-                Log.v("Inside onDataSetChanged", String.valueOf(data.getCount()));
+                data = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI, null, QuoteColumns.ISCURRENT + " = ?",
+                        new String[]{"1"}, null);
                 Binder.restoreCallingIdentity(identityToken);
 
             }
 
             @Override
             public void onDestroy() {
-                if(data !=null){
+                if (data != null) {
                     data.close();
-                    data=null;
+                    data = null;
                 }
             }
 
             @Override
             public int getCount() {
-                return data==null?0:data.getCount();
+                return data == null ? 0 : data.getCount();
             }
 
             @Override
             public RemoteViews getViewAt(int position) {
-                if(position == AdapterView.INVALID_POSITION||data==null|!data.moveToPosition(position)){
-                    Log.v("Inside getViewAT","dsd");
+                if (position == AdapterView.INVALID_POSITION || data == null | !data.moveToPosition(position)) {
                     return null;
                 }
                 RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.collection_list_item);
                 String symbol = data.getString(data.getColumnIndex(QuoteColumns.SYMBOL));
-                Log.v("AppWidgetUpdateService", symbol);
                 String bidPrice = data.getString(data.getColumnIndex(QuoteColumns.BIDPRICE));
                 String name = data.getString(data.getColumnIndex(QuoteColumns.NAME));
                 String change;
-                if(Utils.showPercent) {
+                if (Utils.showPercent) {
                     change = data.getString(data.getColumnIndex("percent_change"));
-                }
-                else {
+                } else {
                     change = data.getString(data.getColumnIndex("change"));
                 }
                 remoteViews.setTextViewText(R.id.widget_stock_symbol, symbol);
                 remoteViews.setTextViewText(R.id.widget_stock_bidprice, bidPrice);
-                remoteViews.setTextViewText(R.id.widget_stock_name,name);
+                remoteViews.setTextViewText(R.id.widget_stock_name, name);
                 int sdk = Build.VERSION.SDK_INT;
                 if (data.getInt(data.getColumnIndex("is_up")) == 1) {
                     if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
@@ -93,10 +86,9 @@ public class DetailWidgetRemoteViewService extends RemoteViewsService {
 
                 remoteViews.setTextViewText(R.id.widget_stock_percent, change);
                 final Intent fillinIntent = new Intent();
-                fillinIntent.putExtra(DetailFragment.SYMBOL,symbol);
-                fillinIntent.putExtra(DetailFragment.NAME,name);
-                remoteViews.setOnClickFillInIntent(R.id.widget_list_item,fillinIntent);
-                Log.v("remoteview",remoteViews.toString());
+                fillinIntent.putExtra(DetailFragment.SYMBOL, symbol);
+                fillinIntent.putExtra(DetailFragment.NAME, name);
+                remoteViews.setOnClickFillInIntent(R.id.widget_list_item, fillinIntent);
                 return remoteViews;
             }
 
@@ -112,7 +104,7 @@ public class DetailWidgetRemoteViewService extends RemoteViewsService {
 
             @Override
             public long getItemId(int position) {
-                if(data.moveToPosition(position)){
+                if (data.moveToPosition(position)) {
                     return data.getLong(data.getColumnIndex(QuoteColumns._ID));
                 }
                 return 0;

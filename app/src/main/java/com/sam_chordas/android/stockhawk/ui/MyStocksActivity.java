@@ -120,9 +120,10 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 } else {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new DetailFragment(), DETAILFRAGMENT_TAG).commit();
                 }
-            } else {
-                mTwoPane = false;
             }
+        }
+        else {
+            mTwoPane = false;
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -139,9 +140,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                                 public void onInput(MaterialDialog dialog, CharSequence input) {
                                     // On FAB click, receive user input. Make sure the stock doesn't already exist
                                     // in the DB and proceed accordingly
-                                    Log.v("FAB",input.toString());
-                                    String inputValue = input.toString().replaceAll(" ","");
-                                    Log.v("FAB",inputValue);
+                                    Log.v("FAB", input.toString());
+                                    String inputValue = input.toString().replaceAll(" ", "");
+                                    Log.v("FAB", inputValue);
                                     Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                                             new String[]{QuoteColumns.SYMBOL}, QuoteColumns.SYMBOL + "= ?",
                                             new String[]{inputValue.toString().toUpperCase()}, null);
@@ -174,7 +175,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
         mTitle = getTitle();
         if (isConnected) {
-            long period = 300L;
+            long period = 3600L;
             long flex = 10L;
             String periodicTag = "periodic";
             tag = periodicTag;
@@ -253,11 +254,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         if (id == R.id.action_change_units) {
             // this is for changing stock changes from percent value to dollar value
             Utils.showPercent = !Utils.showPercent;
@@ -290,6 +286,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         mCursorAdapter.swapCursor(null);
     }
 
+    //To check the network status
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.preference_status_key))) {
@@ -297,6 +294,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         }
     }
 
+    //Update empty view based on network status
     public void updateEmptyView() {
         if (mCursorAdapter.getItemCount() == 0) {
             TextView tv = (TextView) findViewById(R.id.recyclerview_emptyView);
