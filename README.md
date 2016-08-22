@@ -6,4 +6,4 @@ The Stock Hawk is an Android application for displaying the stock values from Ya
 
 ##App Walkthrough   
    
- <img src='https://github.com/YSulekha/StockHawk/blob/master/StockHawk.gif title='App Walkthrough' width='' alt='App Walkthrough' />
+ <img src='https://github.com/YSulekha/StockHawk/blob/master/StockHawk.gif' title='App Walkthrough' width='' alt='App Walkthrough' />
