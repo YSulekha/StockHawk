@@ -154,15 +154,13 @@ public class Utils {
 
     public static int getNetworkStatus(Context mContext) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        int status = preferences.getInt(mContext.getString(R.string.preference_status_key), StockTaskService.STATUS_UNKNOWN);
-        return status;
+        return preferences.getInt(mContext.getString(R.string.preference_status_key), StockTaskService.STATUS_UNKNOWN);
     }
 
     public static boolean checkNetworkState(Context context) {
-        ConnectivityManager con = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+        ConnectivityManager con = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = con.getActiveNetworkInfo();
-        if (ni != null && ni.isConnectedOrConnecting())
-            return true;
-        return false;
+        return ni != null && ni.isConnectedOrConnecting();
+
     }
 }

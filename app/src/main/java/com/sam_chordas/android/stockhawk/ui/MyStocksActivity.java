@@ -51,12 +51,12 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     private QuoteCursorAdapter mCursorAdapter;
     private Context mContext;
     private Cursor mCursor;
-    boolean isConnected;
-    MaterialDialog dialog;
-    SharedPreferences mSharedPreference;
-    boolean mTwoPane;
+    private boolean isConnected;
+    private MaterialDialog dialog;
+    private SharedPreferences mSharedPreference;
+    private boolean mTwoPane;
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
-    String tag = "";
+    private String tag = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,13 +152,13 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                                                         Toast.LENGTH_LONG);
                                         toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                                         toast.show();
-                                        return;
                                     } else {
                                         // Add stock to DB
                                         mServiceIntent.putExtra("tag", "add");
                                         mServiceIntent.putExtra("symbol", inputValue.toString());
                                         startService(mServiceIntent);
                                     }
+                                    c.close();
                                 }
                             }).show();
 
@@ -229,11 +229,11 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         }
     }
 
-    public void networkToast() {
+    private void networkToast() {
         Toast.makeText(mContext, getString(R.string.network_toast), Toast.LENGTH_SHORT).show();
     }
 
-    public void restoreActionBar() {
+    private void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
@@ -295,7 +295,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     }
 
     //Update empty view based on network status
-    public void updateEmptyView() {
+    private void updateEmptyView() {
         if (mCursorAdapter.getItemCount() == 0) {
             TextView tv = (TextView) findViewById(R.id.recyclerview_emptyView);
             String emptyString = getString(R.string.empty_string);

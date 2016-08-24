@@ -151,7 +151,7 @@ public class StockTaskService extends GcmTaskService {
                                 null, null);
                     }
                     ArrayList<ContentProviderOperation> operations = Utils.quoteJsonToContentVals(getResponse, mContext);
-                    if (operations.size() >= 1 && (operations.get(0) == null || operations.get(0).equals("null"))) {
+                    if (operations.size() >= 1 && (operations.get(0) == null)) {
                         setLocationStatus(mContext, UNKNOWN_SYMBOL);
                         return -1;
                     }

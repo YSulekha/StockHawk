@@ -18,7 +18,7 @@
         <TextView
             android:id="@+id/widget_stock_symbol"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_weight="1"
             tools:text="GOOG"
             android:layout_gravity="center_vertical"

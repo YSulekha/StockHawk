@@ -16,7 +16,7 @@ import com.sam_chordas.android.stockhawk.R;
  */
 public class StockIntentService extends IntentService {
 
-    Handler mHandler;
+    private Handler mHandler;
 
     public StockIntentService() {
         super(StockIntentService.class.getName());
@@ -32,7 +32,7 @@ public class StockIntentService extends IntentService {
         mHandler = new Handler(Looper.getMainLooper());
     }
 
-    public void updateChart() {
+    private void updateChart() {
         mHandler.post(new Runnable() {
             @Override
             public void run() {

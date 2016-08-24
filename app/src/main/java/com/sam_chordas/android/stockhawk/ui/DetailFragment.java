@@ -41,14 +41,14 @@ public class DetailFragment extends android.support.v4.app.Fragment {
     public static final String SYMBOL = "symbol";
     public static final String NAME = "name";
     private OkHttpClient client = new OkHttpClient();
-    ArrayList<Entry> entries;
-    ArrayList<String> labels;
-    LineChart lineChart;
+    private ArrayList<Entry> entries;
+    private ArrayList<String> labels;
+    private LineChart lineChart;
     private Handler mHandler;
-    ArrayList<ArrayList<String>> result;
-    Context mContext;
-    String symbolValue;
-    String nameValue;
+    private ArrayList<ArrayList<String>> result;
+    private Context mContext;
+    private String symbolValue;
+    private String nameValue;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -103,7 +103,7 @@ public class DetailFragment extends android.support.v4.app.Fragment {
         }
     }
    //Method to fetch the graph values
-    void fetchData(String url) throws IOException {
+    private void fetchData(String url) throws IOException {
 
         Request request = new Request.Builder()
                 .url(url)
@@ -117,8 +117,8 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String responsedata = response.body().string();
-                result = Utils.jsonToArrayList(responsedata);
+                String responseData = response.body().string();
+                result = Utils.jsonToArrayList(responseData);
                 setGraphParameters(result);
                 updateChart();
             }

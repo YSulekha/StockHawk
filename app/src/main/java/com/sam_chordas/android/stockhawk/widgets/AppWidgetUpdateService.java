@@ -84,6 +84,7 @@ public class AppWidgetUpdateService extends IntentService {
             remoteViews.setOnClickPendingIntent(R.id.widget, pendingIntent);
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
         }
+        data.close();
 
     }
 
@@ -99,10 +100,10 @@ public class AppWidgetUpdateService extends IntentService {
     private int getWidgetWidthFromOptions(AppWidgetManager manager, int widgetId) {
         Bundle options = manager.getAppWidgetOptions(widgetId);
         if (options.containsKey(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)) {
-            int minidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+            int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-            int minWidthdp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, minidth, displayMetrics);
-            return minWidthdp;
+            return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, minWidth, displayMetrics);
+
         }
         return getResources().getDimensionPixelSize(R.dimen.widget_default_width);
     }
