@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/widget_margin"
-
     >
 
     <LinearLayout
@@ -21,8 +20,6 @@
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-            tools:text="GOOG"
-
             />
 
         <TextView
@@ -31,8 +28,7 @@
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-
-            tools:text="739.75" />
+            />
 
         <TextView
             android:id="@+id/widget_stock_percent"
@@ -40,8 +36,7 @@
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-
-            tools:text="-0.18%" />
+            />
 
     </LinearLayout>
 

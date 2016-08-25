@@ -17,7 +17,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -140,9 +139,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                                 public void onInput(MaterialDialog dialog, CharSequence input) {
                                     // On FAB click, receive user input. Make sure the stock doesn't already exist
                                     // in the DB and proceed accordingly
-                                    Log.v("FAB", input.toString());
                                     String inputValue = input.toString().replaceAll(" ", "");
-                                    Log.v("FAB", inputValue);
                                     Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                                             new String[]{QuoteColumns.SYMBOL}, QuoteColumns.SYMBOL + "= ?",
                                             new String[]{inputValue.toString().toUpperCase()}, null);
@@ -152,13 +149,13 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                                                         Toast.LENGTH_LONG);
                                         toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                                         toast.show();
+                                        return;
                                     } else {
                                         // Add stock to DB
                                         mServiceIntent.putExtra("tag", "add");
                                         mServiceIntent.putExtra("symbol", inputValue.toString());
                                         startService(mServiceIntent);
                                     }
-                                    c.close();
                                 }
                             }).show();
 

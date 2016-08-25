@@ -2,16 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sam_chordas.android.stockhawk.ui.DetailFragment"
     android:padding="8dp"
-    >
+    tools:context="com.sam_chordas.android.stockhawk.ui.DetailFragment">
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/linechart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#002bfeee"
-        android:contentDescription="@string/graph_description"/>
+        android:contentDescription="@string/graph_description" />
 </FrameLayout>
 
 
